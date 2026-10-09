@@ -1,0 +1,27 @@
+[Unit]
+Description=Spring Boot Application
+Wants=network-online.target
+After=network-online.target mysql.service
+
+[Service]
+Type=simple
+User=spring-runner
+Group=spring-runner
+WorkingDirectory=/opt/spring-app
+Environment=SERVER_PORT=8082
+Environment=SPRING_DATASOURCE_URL=jdbc:mysql://127.0.0.1:3306/springboot_db
+Environment=SPRING_DATASOURCE_USERNAME=spring-admin
+EnvironmentFile=/etc/spring-app/spring-app.env
+ExecStart=/usr/bin/java -jar /opt/spring-app/app.jar
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGTERM
+TimeoutStopSec=30
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
